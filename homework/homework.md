@@ -106,4 +106,8 @@ Der Beispiel-Grafik fehlt aber noch ein wichtiges Element. Zwischen Rechteck und
 
 Schaffst du es den grünen Kreis hinzufügen und das Meisterwerk zu vollenden? Wie man einen Kreis macht, kannst du [hier](https://developer.mozilla.org/de/docs/Web/SVG/Element/circle) nachlesen.
 
+## Node.js
+
+Eine letzte kleine Aufgabe: Bitte installiere vor dem Seminar [Node.js v6](https://nodejs.org/en/) auf deinem Laptop. Node.js ist praktisch JavaScript für die Kommandozeile und für alle Betriebssystem verfügbar. In unserem Seminar werden wir Node.js verwenden, um eine kleinen Web-Server für Entwicklungszwecke aufzusetzen. 
+
 ### Vielen Dank für deine Mühe und bis zum Seminar 🍻
