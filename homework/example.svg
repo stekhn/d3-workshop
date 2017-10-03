@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
+  <rect x="10" y="10" width="150" height="150" fill="red"/>
+  <!-- Hier fehlt noch ein grüner Kreis -->
+  <polygon x="5" y="5" points="584 150 441 150 513 10 584 150" fill="blue"/>
+  <line x1="10" y1="187" x2="584" y2="187" fill="none" stroke="aqua" stroke-miterlimit="10" stroke-width="5"/>
+  <path d="M12,288s295-108,295,0,281-24,281-24" fill="none" stroke="violet" stroke-miterlimit="10" stroke-width="5"/>
+  <text x="10" y="375" font-size="18" font-family="Arial">Das ist eine wunderschöne Grafik</text>
+</svg>
