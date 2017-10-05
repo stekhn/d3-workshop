@@ -1,0 +1,22 @@
+{
+  "name": "wahlprogramm-analyse-longread",
+  "description": "Analysis of manifestos for the German elections 2017",
+  "author": "Steffen Kühne",
+  "version": "0.0.1",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:stekhn/d3-workshop.git"
+  },
+  "scripts": {
+    "start": "node node_modules/http-server/bin/http-server -s -o --cors"
+  },
+  "dependencies": {
+    "d3": "^4.10.2",
+    "http-server": "^0.10.0",
+    "leaflet": "^1.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.8.0"
+  }
+}
