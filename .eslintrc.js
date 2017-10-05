@@ -1,10 +1,10 @@
-{
+module.exports = {
   "globals": {
     "d3": true,
     "L": true
   },
   "rules": {
-    "indent": [2, 2, {"SwitchCase": 1}],
+    "no-console": [1],
     "quotes": [2, "single"],
     "linebreak-style": [2, "unix"],
     "semi": [2, "always"],
