@@ -1,1 +1,321 @@
-# D3 workshop
+# D3-Workshop
+
+## Was ist D3
+
+D3 = Data-Driven Documents
+
+D3 ist eine JavaScript-Bibliothek zur Visualisierung von Daten. D3 hilft dabei, Datensätze mit SVG, Canvas und HTML zum Leben zu erwecken. Im Gegensatz zu vielen anderen Bibliotheken ermöglicht D3 eine große Kontrolle über das endgültige visuelle Ergebnis.
+
+D3 wird auf Hunderten von Tausenden von Webseiten verwendet. Typische Anwendungsfälle sind das Erstellen von interaktiven Grafiken, Dashboards und Karten. Darüber hinaus ermöglicht das Grafikformat SVG die Weiterverwendung und Nachbearbeitung von Grafiken für eine Verwendung in Print-Publikationen.
+
+Da D3 einen großen Gestaltungsspielraum bietet und wenige Vorgaben macht, ist die Produktion von Grafiken jedoch teilweise recht aufwendig und erfordert viel Erfahrung im Umgang mit modernen Webstandards und den von D3 bereitgestellten Funktionen.
+
+- Offizielle Webseite: https://d3js.org/
+- Dokumentation: https://github.com/d3/d3/blob/master/API.md
+- Beispiele: https://github.com/d3/d3/wiki/Gallery
+- Tutorials: https://github.com/d3/d3/wiki/Tutorials
+
+## D3 einbinden
+
+Man kann D3 entweder von einer externen Seite oder lokal einbinden.
+
+Einbinden von der offiziellen Seite:
+
+```html
+<script src="https://d3js.org/d3.v4.min.js"></script>
+```
+
+Einbinden von einem CDN (Content Delivery Network), welches auf die schnelle Bereitstellung von Paketen optimiert ist:
+
+```html
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.min.js"></script>
+```
+
+Einbinden einer lokalen Version von D3:
+
+```html
+<script src="../node_modules/d3/build/d3.min.js"></script>
+```
+
+In diesem Fall wurde die D3 mithilfe des Paketmanagers NPM installiert `npm install d3`. Man könnte aber D3 auch einfach herunterladen.
+
+Üblicherweise bindet man Bibliotheken im `<head></head>` Bereich einer Website ein. So stellt man sicher, dass die durch die Bibliothek bereitgestellten Funktionen von Anfang verfügbar sind.
+
+
+## Selektoren
+
+D3 verfügt über zwei Methoden, wie man Elemente in einem Dokument auswählen kann. Wenn man ein Element ausgewählt hat, kann man dieses beispielsweise mit Inhalten befüllen, löschen oder ein Klickverhalten festlegen.
+
+Ein Element auswählen:
+
+```javascript
+var chart = d3.select('#chart')
+```
+
+Mehrere Elemente auswählen:
+
+```javascript
+var charts = d3.selectAll('.chart')
+```
+
+Die wichtigsten Selektoren:
+
+- `body`: Element über Tag auswählen
+- `#chart`: Element/e über ID auswählen
+- `.chart`: Element/e über Klasse auswählen
+- `[chart=bar]`: Element/e über Attribut auswählen
+- `#chart.bar`: Element/e über ID und Klasse auswählen
+- `#chart .bar`: Element/e über Parent-ID und Klasse auswählen
+
+
+Vergleichbar mit den nativen Methoden `document.querySelector('#chart')` und `document.querySelectorAll('.chart')`, die jeder moderne Browser unterstützt.
+
+Diese Selektoren würde man auch verwenden, um Elemente mit CSS zu stylen:
+
+```css
+.chart {
+  background: beige;
+}
+```
+
+## Attribute erstellen
+
+Um ein Element zu erstellen, verwendet man die Funktion `d3.append()`. Diese wird auf einen Selektion angewandt, der das neue Element hinzugefügt wird. Damit kann man alle Arten von DOM-Elementen erstellen.
+
+Einfaches HTML-Beispiel.
+
+```javascript
+d3.select('body')
+  .append('h1')
+    .text('Überschrift');
+```
+
+Das resultierende Markup sieht folgendermaßen aus:
+
+```html
+<body>
+  <h1>Überschrift</h1>
+</body>
+```
+
+Mit dem sogenannten *Method Chaining*, lassen sich mehrere Elemente hintereinander hinzufügen und Attribute setzen. In diesem SVG-Beispiel Wird erste der `<body></body>` eines HTML-Dokuments ausgewählt, dann eine SVG hinzugefügt. Diesem SVG wird wiederum ein rotes Dreieck hinzugefügt:  
+
+```javascript
+d3.select('body')
+  .append('svg')
+    .attr('width', 160)
+    .attr('height', 160)
+  .append('rect')
+    .attr('x', 5)
+    .attr('y', 5)
+    .attr('width', 150)
+    .attr('height', 150)
+    .attr('fill', 'red');
+```
+
+Das resultierende Markup sieht folgendermaßen aus:
+
+```html
+<body>
+  <svg width="600" height="160">
+    <rect x="5" y="5" width="150" height="150" fill="red"></rect>
+  </svg>
+</body>
+```
+
+## SVG Elemente und Attribute
+
+Hier eine kleine Übersicht über die wichtigsten SVG-Elemente:
+
+```svg
+<rect x="0" y="0" width="100" height="100" />
+<circle cx="100" cy="100" r="100" />
+<ellipse cx="100" cy="100" rx="100" ry="50" />
+<polygon points="128,0 256,256 0,256" />
+<line x1="0" y1="0" x2="256" y2="256" />
+<path d="M100,160 Q128,190 156,160" />
+<text x="100" y="100" text-anchor="start">Text</text>
+```
+
+Die Attribute `x`, `y`, `cx`, `cy`, `r` und so weiter sind vor allem dazu da, die Position und Größe einen Elements festzulegen.
+
+Außerdem gibt es noch die Möglichkeit Elemente zu gruppieren. Das hilft dabei Ordnung zu schaffen, ein Style auf mehrere Elemente anzuwenden oder eine Gruppe von Elemente zu verschieben:
+
+```svg
+<g fill="red" style="transform: translate(10,10);">
+  <circle cx="10" cy="10" r="10" />
+  <circle cx="30" cy="10" r="10" />
+  <circle cx="50" cy="10" r="10" />
+</g>
+```
+
+Die meisten dieser Elemente können außerdem Attribute haben, die das Design festlegen:
+- `fill`: Füllfarbe, zum Beispiel `red`
+- `fill-opacity`: Deckkraft zwischen `1` und `0`
+- `stroke`: Konturfarbe, zum Beispiel `green`
+- `stroke-width`: Dicke der Kontur, zum Beispiel `2` 
+- `stroke-opacity`: Deckkraft der Kontur zwischen `1` und `0`
+
+Außerdem können SVG-Elemente, wie HTML auch, mit CSS gestylt werden:
+
+```css
+.axis line {
+  fill: none;
+  stroke: #6c3;
+  stroke-width: 2;
+}
+```
+
+Ein praktisches SVG-Cheat-Sheet gibt es [hier](https://learn-the-web.algonquindesign.ca/topics/svg-cheat-sheet/).
+
+## Dynamische Attribute setzen
+
+D3 ermöglicht es die Attribute von Elementen (Inhalt, Position, Größe oder Aussehen) dynamisch zu setzen.
+
+In diesem Beispiel wird eine neuer Paragraph erzeugt, dessen Inhalt eine zufällig Zahl zwischen 1 und 10 ist:
+
+```javascript
+d3.select('body')
+  .append('p')
+    .text(function () {
+      return 'Zufällige Zahl: ' + Math.round((Math.random() * 10) + 1);
+    });
+```
+
+Diese Eigenschaft ist sehr praktisch, wenn man programmatisch Elemente hinzufügt, deren Eigenschaften sich entsprechend der zugrundeliegenden Daten verändern sollen.
+
+## Daten verwenden
+
+Die Fähigkeit Daten in Elemente zu verwandeln ist die große Stärke von D3. Das grundlegende Muster dafür ist immer das gleiche.
+
+
+Alles beginnt mit einem Array, einer sortierten Liste, welches die Daten enthält:
+
+```javascript
+var data = [5, 10, 25, 40];
+```
+
+Für jede Zahle im Array `data` wird ein neuer Paragraph erstellt, der diese Zahl beinhaltet:
+
+```javascript
+var data = [5, 10, 25, 40];
+
+d3.select('body').selectAll('p')
+    .data(data)
+    .enter()
+  .append('p')
+    .text(function (d) {
+      return 'Wert: ' + d;
+    });
+```
+
+**Hinweis**: Das `.selectAll('p')` am Anfang wird benötigt, obwohl es noch gar keine Paragraphen gibt.
+
+Wir können die Werte aus dem Array `data` auch verwenden, um ein einfaches Diagramm zu zeichnen:
+
+```javascript
+var data = [5, 10, 25, 40];
+
+d3.select('body')
+  .append('svg').selectAll('circle')
+    .data(data)
+    .enter()
+  .append('circle')
+    .attr('cx', function (d) {
+      return 15 + d;
+    })
+    .attr('cy', 15)
+    .attr('r', 10); 
+```
+
+Die verwendete Funktion ist ein sogenannte *Accessor*. Wenn ein oder mehrere Elemente mit einem Datensatz verbunden sind, liefert uns der Accessor immer den jeweiligen Datensatz und Index des zu erzeugenden Elements:
+
+```javascript
+function (d, i) {
+  console.log('Werte':', d)
+  console.log('Index':', i)
+
+  return d;
+} 
+```
+
+Die Funktion `console.log()` kann praktisch sein, um Fehler im Programmcode zu finden (*debuggen*). Werden überhaupt Werte ausgegeben und wenn ja, sind es die richtigen?
+
+## Daten aus externen Quellen laden
+Mihilfe von D3 kann man auch Daten aus CSV- oder JSON-Dateien laden. Wichtig dabei ist, dass diese Dateien korrekt formatiert sind.
+
+CSV-Datei laden:
+
+```javascript
+d3.csv('data.csv', function (data) {
+  console.log(data);
+});
+```
+
+Da das CSV-Format keine Informationen beinhaltet, ob einen Spalte Zahlen (*Integers*, *Floats*) oder Zeichenfolgen (*String*) enthält muss man diese zuerst in richtige Format konvertieren:
+
+```javascript
+d3.csv('data.csv', function (data) {
+  data.forEach(function (d) {
+    return {
+      name: d.name,
+      age: parseInt(d.age) 
+    };
+  });
+});
+```
+
+JSON-Datei laden:
+
+```javascript
+d3.json('data.json', function (data) {
+  console.log(data);
+});
+```
+
+Das Laden der Daten passiert asynchron. Deshalb kann man nur innerhalb des *Callbacks* (`function (data) {}`) mit den Daten arbeiten. Diese Callback-Funktion kann man auch getrennt definieren:
+
+```javascript
+d3.json('data.json', drawCircles);
+
+function drawCircles(data) {
+
+  d3.select('body')
+  .append('svg').selectAll('circle')
+    .data(data)
+    .enter()
+  .append('circle')
+    .attr('cx', function (d) {
+      return 15 + d;
+    })
+    .attr('cy', 15)
+    .attr('r', 10); 
+}
+```
+
+**Hinweis:** Um Daten dynamisch nachladen zu können, muss die Anwendung über einen (lokalen) Webserver ausgeliefert werden. Wird die HTML-Datei einfach so im Browser geöffnet, für das zu einem so genannten *Cross origin error*. 
+
+## Skalen und Achsen
+
+
+## Events
+
+
+## Animationen
+
+
+## Responsivität
+
+
+## Einbinden
+
+
+
+
+
+
+
+
+
+
+
