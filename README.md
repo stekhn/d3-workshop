@@ -256,7 +256,7 @@ Da das CSV-Format keine Informationen beinhaltet, ob einen Spalte Zahlen (*Integ
 
 ```javascript
 d3.csv('data.csv', function (data) {
-  data.forEach(function (d) {
+  data = data.map(function (d) {
     return {
       name: d.name,
       age: parseInt(d.age) 
@@ -281,21 +281,74 @@ d3.json('data.json', drawCircles);
 function drawCircles(data) {
 
   d3.select('body')
-  .append('svg').selectAll('circle')
-    .data(data)
-    .enter()
-  .append('circle')
-    .attr('cx', function (d) {
-      return 15 + d;
-    })
-    .attr('cy', 15)
-    .attr('r', 10); 
+    .append('svg').selectAll('circle')
+      .data(data)
+      .enter()
+    .append('circle')
+      .attr('cx', function (d) {
+        return 15 + d;
+      })
+      .attr('cy', 15)
+      .attr('r', 10); 
 }
 ```
 
 **Hinweis:** Um Daten dynamisch nachladen zu können, muss die Anwendung über einen (lokalen) Webserver ausgeliefert werden. Wird die HTML-Datei einfach so im Browser geöffnet, für das zu einem so genannten *Cross origin error*. 
 
-## Skalen und Achsen
+## Statistische Funktionen
+
+D3 biete ein paar grundlegende statistische Funktion, welche das Arbeiten mit Daten erleichtern: 
+
+Minimum, Maximum, Bereich:
+
+```javascript
+var data = [5, 10, 25, 40];
+
+d3.min(data); // => 5
+d3.max(data); // => 40
+d3.extent(data) // => [5, 40]
+```
+
+Summe, Durchschnitt, Median:
+
+```javascript
+var data = [5, 10, 25, 40];
+
+d3.sum(data); // => 80
+d3.mean(data); // => 20
+d3.median(data); // => 17.5
+```
+
+Ein Übersicht über alle statistische Funktionen findet sich in der [D3-Dokumentation](https://github.com/d3/d3-array/blob/master/README.md#statistics).
+
+Sind die Daten verschachtelt, braucht man einen **Accessor**:
+
+```javascript
+var data = [
+  { "name": "Michael", "age": 39 },
+  { "name": "Sandra", "age": 24 },
+  { "name": "Jakob", "age": 32 }
+]
+
+d3.extent(data, function (d) { return d.age; } ); // => [24, 39]
+```
+
+Diese statistischen Funktion sind sehr nützlich, um damit die Skalen für ein Diagramm zu berechnen:
+
+## Skalen
+
+Domäne 
+Bereich
+
+
+- **Identität**: spezielle Art von linearer Skala, welche Werte 1 zu 1 abbildet (Pixelwerte)
+- **Linear**: transformiert einen Wert im Domänenintervall in einen Wert im Bereichsintervall
+- **Exponential- und logarithmische Skalen**: wird für exponentiell oder logarithmisch steigende Werte (Wachstum) verwendet
+- **Quantisierung**: lineare Skala mit diskreten Werten für den Ausgabebereich, um Daten zu klassifizieren.
+- **Quantile**: lineare Skala mit diskreten Werten für den Eingabedomäne, wenn die Daten bereits klassifiziert sind
+- **Ordinal**: für nicht quantitative Skalen, wie Namen und Kategorien
+
+## Achsen
 
 
 ## Events
