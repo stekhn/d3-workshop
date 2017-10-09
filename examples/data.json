@@ -1,0 +1,37 @@
+[
+  {
+    "name": "Michael",
+    "city": "Berlin",
+    "profession": "Designer",
+    "age": 39,
+    "income": 52000
+  },
+  {
+    "name": "Sandra",
+    "city": "Leipzig",
+    "profession": "Lektorin",
+    "age": 24,
+    "income": 32000
+  },
+  {
+    "name": "Jakob",
+    "city": "Köln",
+    "profession": "Fotograf",
+    "age": 32,
+    "income": 46000
+  },
+  {
+    "name": "Patrick",
+    "city": "München",
+    "profession": "Manager",
+    "age": 47,
+    "income": 64000
+  },
+  {
+    "name": "Anne",
+    "city": "Frankfurt",
+    "profession": "Pianistin",
+    "age": 28,
+    "income": 39000
+  }
+]
