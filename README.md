@@ -242,7 +242,7 @@ function (d, i) {
 Die Funktion `console.log()` kann praktisch sein, um Fehler im Programmcode zu finden (*debuggen*). Werden überhaupt Werte ausgegeben und wenn ja, sind es die richtigen?
 
 ## Daten aus externen Quellen laden
-Mihilfe von D3 kann man auch Daten aus CSV- oder JSON-Dateien laden. Wichtig dabei ist, dass diese Dateien korrekt formatiert sind.
+Mithilfe von D3 kann man auch Daten aus CSV- oder JSON-Dateien laden. Wichtig dabei ist, dass diese Dateien korrekt formatiert sind.
 
 CSV-Datei laden:
 
@@ -325,9 +325,9 @@ Sind die Daten verschachtelt, braucht man einen **Accessor**:
 
 ```javascript
 var data = [
-  { "name": "Michael", "age": 39 },
-  { "name": "Sandra", "age": 24 },
-  { "name": "Jakob", "age": 32 }
+  { 'name': 'Michael', 'age': 39 },
+  { 'name': 'Sandra', 'age': 24 },
+  { 'name': 'Jakob', 'age': 32 }
 ]
 
 d3.extent(data, function (d) { return d.age; } ); // => [24, 39]
@@ -337,28 +337,118 @@ Diese statistischen Funktion sind sehr nützlich, um damit die Skalen für ein D
 
 ## Skalen
 
-Domäne 
-Bereich
+Skalen sind Funktion, welche für jeden Wert in einem Wertebereich (*Domain*), den entsprechenden Wert in einem anderen Wertebereich (*Range*) zurückgeben.
 
+In diesem Beispiel haben die Daten eine Domäne von 5 bis 40. Für jeden Wert in diesem Bereich soll bestimmt, welche Wert sie in einem anderen Wertebereich hätte, in diesem Fall zwischen 0 und 100:
 
-- **Identität**: spezielle Art von linearer Skala, welche Werte 1 zu 1 abbildet (Pixelwerte)
-- **Linear**: transformiert einen Wert im Domänenintervall in einen Wert im Bereichsintervall
-- **Exponential- und logarithmische Skalen**: wird für exponentiell oder logarithmisch steigende Werte (Wachstum) verwendet
-- **Quantisierung**: lineare Skala mit diskreten Werten für den Ausgabebereich, um Daten zu klassifizieren.
-- **Quantile**: lineare Skala mit diskreten Werten für den Eingabedomäne, wenn die Daten bereits klassifiziert sind
-- **Ordinal**: für nicht quantitative Skalen, wie Namen und Kategorien
+```javascript
+var data = [5, 10, 25, 40];
+
+var scale = d3.scaleLinear()
+  .domain([5, 40])
+  .range([0, 100]);
+
+scale(10); // => 14.285714285714285  
+scale(15); // => 28.57142857142857
+```
+
+In D3 werden diese Funktionen vor allem dafür genutzt, um Werte auf einer Zeichenfläche darzustellen und Achsen zu zeichnen. Dabei werden die Skalen-Funktionen oft mit statistischen Funktionen kombiniert:
+
+```javascript
+var data = [5, 10, 25, 40];
+var width = 200; // Breite der Grafik
+
+var domain = d3.extent(data); // => [5, 40]
+
+var xScale = d3.scaleLinear()
+  .domain(domain)
+  .range([0, width]);
+```
+
+Hier ein Überblick über die wichtigsten Skalen:
+
+- `d3.scaleLinear()`: Lineare Skala, transformiert einen Wert im Domänenintervall in einen Wert im Bereichsintervall
+- `d3.scalePow()`, `d3.scaleLog()`: Exponential- und logarithmische Skalen werden für exponentiell oder logarithmisch steigende Werte (Wachstum) verwendet
+- `d3.scaleTime()`: Zeit,
+- `d3.scaleQuantize()`: Quantisierung, eine lineare Skala mit diskreten Werten für den Ausgabebereich, um Daten zu klassifizieren.
+- `d3.scaleQuantile()`: Quantile, eine lineare Skala mit diskreten Werten für den Eingabedomäne, wenn Daten bereits klassifiziert sind
+- `d3.scaleOrdinal`: Ordinalskala, für nicht quantitative Daten wie Namen oder Kategorien
+
+Alle Skalen und ihre Funktion werden in der [D3-Dokumentation](https://github.com/d3/d3-scale) erklärt.
 
 ## Achsen
 
+Achsen sind ein wichtiges visuelles Werkzeug, um dem Betrachter das Verstehen und Einordnen eines Diagramms zu erleichtern. Achsel helfen dabei einzelne Datenpunkte bestimmten Werten zuzuordnen und die zugrundeliegende Skala zu verstehen.
 
-## Events
+Um eine Achse in D3 zu konstruieren braucht es immer eine Skala. Optional können verschiedene Eigenschaft, wie die Markerlänge oder das Zahlenformat, definiert werden:
 
 
-## Animationen
+```javascript
+var xAxis= d3.axisBottom(xScale)
+  .tickValues([10, 20, 30, 40, 50])
+  .tickFormat(function (d) {
+    return d + ' %';
+  })
+  .tickSize(3);
+```
 
+Alle Funktionen des Achsenkonstruktors werden in der [D3-Dokumentation](https://github.com/d3/d3-axis/blob/master/README.md) erklärt.
+
+Ein Problem bei der Verwendung der Achsen ist ihrer Positionierung. Die linke Achse `d3.axisLeft()` wird standardmäßig entlang des linken Bildschirms gezeichnet. Um die Achsen-Labels zu sehen, muss man die Achse nach rechts verschieben. Das gleiche gilt für die untere Achse `d3.axisBottom()`, welche erst nach unten verschoben werden muss. Dabei hilft die das SVG-Attribut [transform](https://developer.mozilla.org/en-US/docs/Web/CSS/transform) und vordefinierte Seitenabstände:
+
+
+```javascript
+var data = [
+  { 'name': 'Michael', 'age': 39, 'income': 52000 },
+  { 'name': 'Sandra', 'age': 23, 'income': 32000 },
+  { 'name': 'Jakob', 'age': 32, 'income': 46000 }
+];
+
+var margin = { top: 10, right: 10, bottom: 20, left: 45 };
+
+var width = 400;
+var height = 400;
+
+var xExtent = d3.extent(data, function (d) { return d.age; } );
+var yExtent = d3.extent(data, function (d) { return d.income; } );
+
+var xScale = d3.scaleLinear()
+  .domain(xExtent)
+  .range([0, width]);
+var yScale = d3.scaleLinear()
+  .domain(yExtent)
+  .range([height, 0]);
+
+var xAxis = d3.axisBottom(xScale);
+var yAxis = d3.axisLeft(yScale);
+
+var svg = d3.select('#chart')
+  .append('svg')
+  .attr('width', width + margin.left + margin.right)
+  .attr('height', height + margin.top + margin.bottom);
+
+var group = svg.append('g')
+  .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+group.append('g')
+  .attr('transform', 'translate(0,' + height + ')')
+  .call(xAxis);
+
+group.append('g')
+  .call(yAxis);
+```
+
+In diesem Beispiel zeigt sich der Vorteil der Verwendung von SVG-Gruppe `<g>`, um mehrere Elemente auf einmal zu verschieben.
+
+## Farben
 
 ## Responsivität
 
+## Events
+
+## Animationen
+
+## Geodaten
 
 ## Einbinden
 
