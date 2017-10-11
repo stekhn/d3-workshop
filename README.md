@@ -6,9 +6,9 @@ D3 = Data-Driven Documents
 
 D3 ist eine JavaScript-Bibliothek zur Visualisierung von Daten. D3 hilft dabei, Datensätze mit SVG, Canvas und HTML zum Leben zu erwecken. Im Gegensatz zu vielen anderen Bibliotheken ermöglicht D3 eine große Kontrolle über das endgültige visuelle Ergebnis.
 
-D3 wird auf Hunderten von Tausenden von Webseiten verwendet. Typische Anwendungsfälle sind das Erstellen von interaktiven Grafiken, Dashboards und Karten. Darüber hinaus ermöglicht das Grafikformat SVG die Weiterverwendung und Nachbearbeitung von Grafiken für eine Verwendung in Print-Publikationen.
+D3 wird auf Hunderten von Tausenden von Webseiten verwendet. Typische Anwendungsfälle sind das Erstellen von interaktiven Grafiken, Dashboards und Karten. Darüber hinaus ermöglicht das Grafikformat SVG die Weiterverwendung und Nachbearbeitung von Grafiken für den Druck.
 
-Da D3 einen großen Gestaltungsspielraum bietet und wenige Vorgaben macht, ist die Produktion von Grafiken jedoch teilweise recht aufwendig und erfordert viel Erfahrung im Umgang mit modernen Webstandards und den von D3 bereitgestellten Funktionen.
+D3 erfordert viel Erfahrung im Umgang mit modernen Webstandards und Funktionen der Bibliothek. Daher ist die Produktion von Grafiken teilweise recht aufwendig.
 
 - Offizielle Webseite: https://d3js.org/
 - Dokumentation: https://github.com/d3/d3/blob/master/API.md
@@ -232,8 +232,8 @@ Die verwendete Funktion ist ein sogenannte *Accessor*. Wenn ein oder mehrere Ele
 
 ```javascript
 function (d, i) {
-  console.log('Werte':', d)
-  console.log('Index':', i)
+  console.log('Werte:', d)
+  console.log('Index:', i)
 
   return d;
 } 
@@ -512,15 +512,17 @@ Alle Möglichkeiten Animationen und Übergänge zu erstellen finden sich in der 
 
 Mehr dazu wie man Geodaten einbinden und welche Projektionen steht in der [D3-Dokumentation](https://github.com/d3/d3-geo/blob/master/README.md).
 
-## Einbinden
+## Exportieren
 
+D3-Grafiken im SVG-Format lassen sich recht einfach mit dem Bookmarklet [SVG Crowbar](https://nytimes.github.io/svg-crowbar/) abspeichern. Das ermöglicht zum Beispiel eine Nachbearbeitung mit Adobe Illustrator.
 
+## Einbetten
+Das Einbetten von D3-Grafiken funktioniert am besten mit einem HTML-iFrame:
 
+```html
+<iframe style="width: 100%; height: 460px; border: 0;" width="100%" height="100%" frameborder="0" src="https://web.br.de/interaktiv/milchpreise/"></iframe>
+```
 
+Das funktioniert aber nur dann, wenn sich bei Größenänderung die Höhe nicht verändert. Andernfalls kann es sein, dass Teile der Grafik abgeschnitten werden oder weiße Lücken entstehen.
 
-
-
-
-
-
-
+Für das Einbetten von Grafiken mit variabler Höhe empfiehlt sich die JavaScript-Bibliothek [pym.js](http://blog.apps.npr.org/pym.js/). 
