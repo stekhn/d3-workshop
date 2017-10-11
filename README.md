@@ -438,17 +438,79 @@ group.append('g')
   .call(yAxis);
 ```
 
-In diesem Beispiel zeigt sich der Vorteil der Verwendung von SVG-Gruppe `<g>`, um mehrere Elemente auf einmal zu verschieben.
+In diesem Beispiel zeigt sich der Vorteil der Verwendung von SVG-Gruppen `<g>`, um mehrere Elemente auf einmal zu verschieben.
 
 ## Farben
 
-## Responsivität
+Alle Farbskalen und wie man sie verwendet steht in der [D3-Dokumentation](https://github.com/d3/d3-color/blob/master/README.md).
 
 ## Events
+Um Interaktionen mit den Inhalten einer Grafik zu ermöglichen, kann man so genannte *Event Listener* registrieren. Diese rufen eine bestimmte Aktion aus, wenn der Benutzer beispielsweise mit der Maus über ein Element klickt.
+
+```javascript
+var chart = d3.select('body')
+  .append('svg')
+    .attr('width', 160)
+    .attr('height', 160)
+  .append('rect')
+    .attr('x', 5)
+    .attr('y', 5)
+    .attr('width', 150)
+    .attr('height', 150)
+    .attr('fill', 'red')
+    .on('click', function (d, i) {
+      console.log('Rechteck wurde angeklickt!');
+      console.log('Die Breite des Rechtecks ist:', d3.select(this).attr('width'));
+    });
+```
+
+Event Listener in Verbindung mit einem `console.log()` können sehr praktisch beim *Debuggen* einer Anwendung sein. Wir das richtige Element ausgewählt? Passiert überhaupt etwas?
+
+Mehr Infos zu *Event Listener* sich in der [D3-Dokumentation](https://github.com/d3/d3-selection/blob/master/README.md#handling-events).
+
+## Responsivität
+D3 hat von sich aus keine Funktionen eingebaut, die es ermöglichen Grafiken *responsive* zu erstellen. Die Grafiken passen sich daher nicht automatisch an die Breite des Benutzergeräts (oder iFrames) an. 
+
+Um zumindest beim ersten Aufruf die Grafik in der passenden Größe zu erstellen, kann man dafür die Höhe und Breite des Elterncontainers `#chart` verwenden: 
+
+```javascript
+var chart = d3.select('#chart');
+
+var width = parseFloat(chart.style('width'));
+var height = parseFloat(chart.style('height'));
+
+var svg = chart
+  .append('svg')
+    .attr('width', width)
+    .attr('height', height);
+```
+
+Wenn den Benutzer jedoch die Breite des Browserfensters verändert, zum Beispiel durch Maximieren oder Drehen des mobilen Endgeräts, passt sich die Grafik nicht an. Um auf diese Veränderungen zu reagieren, kann man einen *Event Listener* registrieren, der bei Bedarf den Chart neuzeichnet:
+
+```javascript
+var timeout;
+
+d3.select(window).on('resize', function () {
+  clearTimeout(timeout);
+
+  timeout = setTimeout(function () {
+    d3.select('#chart > svg').remove();
+    draw(cachedData);
+  }, 200);
+});
+```
+
+Die Timeout-Funktion in diesem Beispiel verhindert, dass die Grafik zu oft neu gezeichnet wird oder zumindest erst dann, wenn die Größenänderung des Containers abgeschlossen ist.
+
+Eine weitere Möglichkeit Grafiken *responsive* zu gestalten, ist das proportionale Skalieren der Grafik in alle Richtungen. Diese Methode wird [hier](https://brendansudol.com/writing/responsive-d3) beschrieben, funktioniert aber nur bei Grafiken, die sich sinnvoll in alle Richtungen skalieren lassen. Oft führt das zum Überlaufen einer Grafiken in den Text hinein.
 
 ## Animationen
 
+Alle Möglichkeiten Animationen und Übergänge zu erstellen finden sich in der [D3-Dokumentation](https://github.com/d3/d3-transition/blob/master/README.md)
+
 ## Geodaten
+
+Mehr dazu wie man Geodaten einbinden und welche Projektionen steht in der [D3-Dokumentation](https://github.com/d3/d3-geo/blob/master/README.md).
 
 ## Einbinden
 
