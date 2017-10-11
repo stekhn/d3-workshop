@@ -4,7 +4,7 @@
 
   <meta charset="utf-8">
 
-  <title>One axis</title>
+  <title>One axis (dot plot)</title>
 
   <script src="../node_modules/d3/build/d3.min.js"></script>
 
@@ -30,7 +30,6 @@
     function draw(data) {
 
       data = data.map(function (d) {
-
         return {
           name: d.name,
           age: parseInt(d.age),
@@ -66,9 +65,7 @@
           .attr('cx', function (d) { return xScale(d.age); })
           .attr('cy', 7.5)
           .attr('r', 7.5)
-          .attr('stroke-width', 2)
-          .attr('stroke', 'black')
-          .attr('fill', 'aqua');
+          .attr('fill', 'dodgerblue');
     }
   </script>
 </body>

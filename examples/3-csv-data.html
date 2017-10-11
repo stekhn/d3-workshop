@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+
+<head>
+
+  <meta charset="utf-8">
+
+  <title>Simple HTML</title>
+
+  <script src="../node_modules/d3/build/d3.min.js"></script>
+</head>
+
+<body>
+
+  <script type="text/javascript">
+
+    d3.csv('data.csv', function (data) {
+
+      data = data.map(function (d) {
+
+        return {
+          name: d.name,
+          age: parseInt(d.age),
+          income: parseInt(d.income)
+        };
+      });
+
+      d3.select('body').selectAll('p')
+          .data(data)
+          .enter()
+        .append('p')
+          .text(function (d, i) {
+            return i + ': ' + d.name + ' (' + d.age + '): ' + d.income + ' €';
+          });
+    });
+  </script>
+</body>

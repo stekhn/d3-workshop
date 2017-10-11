@@ -4,7 +4,7 @@
 
   <meta charset="utf-8">
 
-  <title>Two axis (scatter plot)</title>
+  <title>Bar chart</title>
 
   <script src="../node_modules/d3/build/d3.min.js"></script>
 
@@ -17,7 +17,7 @@
 
 <body>
 
-  <h2>Altersverteilung</h2>
+  <h2>Einkommensverteilung</h2>
 
   <div id="chart"></div>
 
@@ -30,7 +30,6 @@
     function draw(data) {
 
       data = data.map(function (d) {
-
         return {
           name: d.name,
           age: parseInt(d.age),
@@ -38,22 +37,28 @@
         };
       });
 
+      data = data.sort(function(a, b){
+        return d3.ascending(a.income, b.income);
+      });
+
       var width = 400;
       var height = 400;
 
       var margin = { top: 10, right: 10, bottom: 20, left: 45 };
 
-      var xExtent = d3.extent(data, function (d) { return d.age; } );
-      var yExtent = d3.extent(data, function (d) { return d.income; } );
+      var xDomain = d3.extent(data, function (d) { return d.income; } );
+      var yDomain = data.map(function (d) { return d.name; });
 
       var xScale = d3.scaleLinear()
-        .domain(xExtent)
-        .range([0, width]);
-      var yScale = d3.scaleLinear()
-        .domain(yExtent)
-        .range([height, 0]);
+        .domain([0, xDomain[1]])
+        .rangeRound([0, width]);
+      var yScale = d3.scaleBand()
+        .domain(yDomain)
+        .padding(0.25)
+        .rangeRound([height, 0]);
 
-      var xAxis = d3.axisBottom(xScale);
+      var xAxis = d3.axisBottom(xScale)
+        .ticks(5);
       var yAxis = d3.axisLeft(yScale);
 
       var svg = d3.select('#chart')
@@ -71,16 +76,15 @@
       group.append('g')
         .call(yAxis);
 
-      group.selectAll('circles')
+      group.selectAll('.bar')
           .data(data)
           .enter()
-        .append('circle')
-          .attr('cx', function (d) { return xScale(d.age); })
-          .attr('cy', function (d) { return yScale(d.income); })
-          .attr('r', 7.5)
-          .attr('stroke-width', 2)
-          .attr('stroke', 'black')
-          .attr('fill', 'aqua');
+        .append('rect')
+          .attr('x', 1)
+          .attr('y', function(d) { return yScale(d.name); })
+          .attr('width', function(d) { return xScale(d.income); })
+          .attr('height', yScale.bandwidth())
+          .attr('fill', 'dodgerblue');
     }
   </script>
 </body>
