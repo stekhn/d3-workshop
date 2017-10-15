@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<head>
+
+  <meta charset="utf-8">
+
+  <title>Dot plot</title>
+
+  <!-- Bibliothek von externem Server einbinden -->
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+
+<body>
+
+  <h2>Altersverteilung (Dot Plot)</h2>
+
+  <!-- Container für Grafik erstellen -->
+  <div id="chart"></div>
+
+  <p>Quelle: frei erfunden</p>
+
+  <script type="text/javascript">
+
+    // Lade die Daten und rufe damit die Funktion draw(data) auf
+    d3.csv('data/income.csv', draw);
+
+    function draw(data) {
+
+      // Für jedes Datenobjekt ...
+      data.forEach(function (d) {
+        // ... Alter und Einkommen in echte Zahlen (integer) umwandeln
+        d.age = parseInt(d.age);
+        d.income = parseInt(d.income);
+      });
+
+      // Höhe und Breite festlegen
+      var width = 600;
+      var height = 50;
+
+      // Außenabstand festlegen
+      var margin = 5;
+
+      // Niedrigstes und höchstes Alter herausfinden
+      var min = d3.min(data, function (d) { return d.age; } );
+      var max = d3.max(data, function (d) { return d.age; } );
+
+      // Skala festlegen, welche das jeweilige Alter in einen
+      // Wert auf dem x-Achse umrechnet
+      var xScale = d3.scaleLinear()
+        // Umfang der Eingabewerte
+        .domain([min - 2, max + 2])
+        // Umfang der Ausgabewerte
+        .range([margin, width - margin]);
+
+      // Wertebereich und Position der x-Achse festlegen
+      var xAxis = d3.axisBottom(xScale);
+
+      // SVG mit vordefinierter Breite und Höhe an Chart-Element anhängen
+      var svg = d3.select('#chart')
+        .append('svg')
+          .attr('width', width)
+          .attr('height', height);
+
+      // x-Achse an Chart-Element anhängen und leicht nach unten verschieben
+      svg.append('g')
+        .attr('transform', 'translate(0,' + 30 + ')')
+        .call(xAxis);
+
+      // Kreis für jedes Daten-Objekt erstellen und an Chart-Element anhängen
+      svg.selectAll('circles')
+          .data(data)
+          .enter()
+        .append('circle')
+          // Position des jeweiligen Datenpunkts auf der x-Achse festlegen
+          .attr('cx', function (d) { return xScale(d.age); })
+          // Gleiche Position für alle Punkte auf der y-Achse (gleiche Höhe)
+          .attr('cy', 7.5)
+          .attr('r', 7.5)
+          .attr('fill', 'dodgerblue');
+    }
+  </script>
+</body>
+

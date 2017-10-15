@@ -6,21 +6,26 @@
 
   <title>Simple SVG</title>
 
-  <script src="../node_modules/d3/build/d3.min.js"></script>
+  <!-- Bibliothek von externem Server einbinden -->
+  <script src="https://d3js.org/d3.v4.min.js"></script>
 </head>
 
 <body>
 
+  <!-- Container für Grafik erstellen -->
   <div id="chart"></div>
 
   <script>
 
+    // Chart-Element über die ID auswählen
     var chart = d3.select('#chart');
 
+    // SVG mit fester Breite und Höhe an Chart-Element anhängen
     var svg = chart.append('svg')
         .attr('width', 600)
         .attr('height', 160);
 
+    // Rotes Rechteck an das SVG Element anhängen
     svg.append('rect')
         .attr('x', 5)
         .attr('y', 5)
@@ -28,12 +33,14 @@
         .attr('height', 150)
         .attr('fill', 'red');
 
+    // Grünen Kreis an das SVG Element anhängen
     svg.append('circle')
         .attr('cx', 305)
         .attr('cy', 80)
         .attr('r', 75)
         .attr('fill', 'lime');
 
+    // Blaues Dreieck an das SVG Element anhängen
     svg.append('polygon')
         .attr('x', 5)
         .attr('y', 5)

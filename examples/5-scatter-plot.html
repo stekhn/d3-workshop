@@ -4,7 +4,7 @@
 
   <meta charset="utf-8">
 
-  <title>Line chart</title>
+  <title>Scatter plot</title>
 
   <!-- Bibliothek von externem Server einbinden -->
   <script src="https://d3js.org/d3.v4.min.js"></script>
@@ -12,7 +12,7 @@
 
 <body>
 
-  <h2>Einkommensentwicklung (Liniendiagramm)</h2>
+  <h2>Alter und Einkommen (Scatter Plot)</h2>
 
   <!-- Container für die Grafik erstellen -->
   <div id="chart"></div>
@@ -22,57 +22,44 @@
   <script type="text/javascript">
 
     // Lade die Daten und rufe damit die Funktion draw(data) auf
-    d3.json('data/income-timeline.json', draw);
+    d3.csv('data/income.csv', draw);
 
     function draw(data) {
 
-      // Parser definieren, der Datum-Strings in ein
-      // echtes JavaScript-Datum (date) umwandeln kann:
-      // '1992-12-1' => Tue Dec 01 1992 00:00:00 GMT+0100 (CET)
-      var parseTime = d3.timeParse('%Y-%m-%d');
-
-      // Datum mit Parser in echtes Datum umwandeln
-      // Einkommen in echte Zahlen (integer) umwandeln
+      // Für jedes Datenobjekt ...
       data.forEach(function (d) {
-        d.date = parseTime(d.date);
+        // ... Alter und Einkommen in echte Zahlen (integer) umwandeln
+        d.age = parseInt(d.age);
         d.income = parseInt(d.income);
       });
 
       // Höhe und Breite festlegen
       var width = 400;
-      var height = 200;
+      var height = 400;
 
       // Seitenabstände vordefinieren
       var margin = { top: 10, right: 10, bottom: 20, left: 45 };
 
-      // Jüngstes und ältestes Datum herausfinden
-      var xDomain = d3.extent(data, function (d) { return d.date; } );
+      // Niedrigstes und höchstes Alter herausfinden
+      var xExtent = d3.extent(data, function (d) { return d.age; } );
       // Niedrigstes und höchstes Einkommen herausfinden
-      var yDomain = d3.extent(data, function (d) { return d.income; } );
+      var yExtent = d3.extent(data, function (d) { return d.income; } );
 
-      // Skala festlegen, welche das jeweilige Datum in einen
+      // Skala festlegen, welche das jeweilige Alter in einen
       // Wert auf dem x-Achse umrechnet
-      var xScale = d3.scaleTime()
-        .domain(xDomain)
+      var xScale = d3.scaleLinear()
+        .domain(xExtent)
         .range([0, width]);
       // Skala festlegen, welche das jeweilige Einkommen in einen
       // Wert auf dem y-Achse umrechnet
       var yScale = d3.scaleLinear()
-        .domain([0, yDomain[1]])
+        .domain(yExtent)
         .range([height, 0]);
 
-      // Funktion festlegen, die aus x- und y-Werten eine Linie zeichnet
-      // (Optional mit Linienglättung)
-      var line = d3.line()
-        .x(function (d) { return xScale(d.date); })
-        .y(function (d) { return yScale(d.income); });
-        // .curve(d3.curveNatural);
-
-      // Wertebereich, Position und Anzahl der Labels auf der x-Achse festlegen
-      var xAxis = d3.axisBottom(xScale)
-        .ticks(5);
-      var yAxis = d3.axisLeft(yScale)
-        .ticks(5);
+      // Wertebereich und Position der x-Achse festlegen
+      var xAxis = d3.axisBottom(xScale);
+      // Wertebereich und Position der y-Achse festlegen
+      var yAxis = d3.axisLeft(yScale);
 
       // SVG mit vordefinierter Größe plus Seitenabstände an Chart-Element anhängen
       var svg = d3.select('#chart')
@@ -94,9 +81,9 @@
           .attr('y', -10)
           .attr('fill', 'black')
           .style('text-anchor', 'end')
-          .text('Datum');
+          .text('Alter');
 
-       // y-Achse an Gruppe anhängen
+      // x-Achse an Gruppe anhängen
       group.append('g')
           .call(yAxis)
         // Achsenbeschriftung hinzufügen
@@ -108,15 +95,17 @@
           .style('text-anchor', 'end')
           .text('Einkommen');
 
-      // Genau eine Linie für alle Daten zeichnen
-      group.append('path')
-        // Datum (Singular von Data), da wir nur eine Linie wollen
-        .datum(data)
-        .attr('fill', 'none')
-        .attr('stroke', 'dodgerblue')
-        .attr('stroke-width', 1.5)
-        // Linienfunktion aufrufen
-        .attr('d', line);
+      // Kreis für jedes Daten-Objekt erstellen und an Gruppe anhängen
+      group.selectAll('circles')
+          .data(data)
+          .enter()
+        .append('circle')
+          // Position des jeweiligen Datenpunkts auf der x-Achse festlegen
+          .attr('cx', function (d) { return xScale(d.age); })
+          // Position des jeweiligen Datenpunkts auf der y-Achse festlegen
+          .attr('cy', function (d) { return yScale(d.income); })
+          .attr('r', 7.5)
+          .attr('fill', 'dodgerblue');
     }
   </script>
 </body>

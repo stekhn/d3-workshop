@@ -6,16 +6,14 @@
 
   <title>Responsive bar chart</title>
 
-  <script src="../node_modules/d3/build/d3.min.js"></script>
+  <!-- Bibliothek von externem Server einbinden -->
+  <script src="https://d3js.org/d3.v4.min.js"></script>
 
+  <!-- Breite und Höhe des Containers mit CSS setzen -->
   <style type="text/css">
     #chart {
       width: 100%;
       height: 400px;
-    }
-
-    svg {
-      overflow: visible;
     }
   </style>
 </head>
@@ -32,11 +30,15 @@
 
     var cachedData, timeout;
 
-    d3.csv('data.csv', draw);
+    // Lade die Daten und rufe damit die Funktion draw(data) auf
+    d3.csv('data/income.csv', draw);
 
+    // Wenn sich die Größe des Browserfensters ändert, löschen
+    // den Chart und zeichne ihn mit den gespiecherten Daten neu
     d3.select(window).on('resize', function () {
       clearTimeout(timeout);
 
+      // Timeout von 200ms, um zu häufiges Neuzeichnen zu verhindern
       timeout = setTimeout(function () {
         d3.select('#chart > svg').remove();
         draw(cachedData);
@@ -45,6 +47,9 @@
 
     function draw(data) {
 
+      // Alter und Einkommen in echte Zahlen (integer) umwandeln,
+      // Ergebnis in globaler Variable cachedData speichern, um
+      // auch außerhalb von draw() darauf zugreifen zu können
       cachedData = data = data.map(function (d) {
         return {
           name: d.name,
@@ -53,57 +58,86 @@
         };
       });
 
+      // Daten absteigen nach Einkommen sortieren
       data = data.sort(function(a, b){
         return d3.ascending(a.income, b.income);
       });
 
+      // Grafik-Container auswählen
       var chart = d3.select('#chart');
 
+      // Breite des Grafik-Container herausfinden
       var width = parseFloat(chart.style('width'));
+      // Höhe des Grafik-Container herausfinden
       var height = parseFloat(chart.style('height'));
 
+      // Seitenabstände vordefinieren
       var margin = { top: 10, right: 10, bottom: 20, left: 45 };
 
+      // Seitenabstände von Breite und Höhe abziehen
       width = width - margin.left - margin.right;
       height = height - margin.top - margin.bottom;
 
       var xDomain = d3.extent(data, function (d) { return d.income; } );
       var yDomain = data.map(function (d) { return d.name; });
 
+      // Skala festlegen, welche das jeweilige Einkommen in einen
+      // Wert auf dem x-Achse umrechnet
       var xScale = d3.scaleLinear()
         .domain([0, xDomain[1]])
-        .rangeRound([0, width]);
+        .range([0, width]);
+      // Kategorielle Skala festlegen, welche jeder Person eine
+      // Position auf der y-Achse (Höhe) zuweist
       var yScale = d3.scaleBand()
         .domain(yDomain)
-        .padding(0.25)
-        .rangeRound([height, 0]);
+        .range([height, 0])
+        // Abstand zwischen den Personen/Balken
+        .padding(0.5);
 
+      // Wertebereich und Position der x-Achse festlegen
       var xAxis = d3.axisBottom(xScale)
+        // x-Achse darf nur (ungefähr) fünf Labels haben
         .ticks(5);
       var yAxis = d3.axisLeft(yScale);
 
-      var svg = chart
+      // SVG mit vordefinierter Größe plus Seitenabstände an Chart-Element anhängen
+      var svg = d3.select('#chart')
         .append('svg')
           .attr('width', width + margin.left + margin.right)
           .attr('height', height + margin.top + margin.bottom);
 
+      // Gruppe erstellen um alle Elemente nach rechts unten zu verschieben
       var group = svg.append('g')
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
+      // x-Achse an Gruppe anhängen und nach unten verschieben
       group.append('g')
-        .attr('transform', 'translate(0,' + height + ')')
-        .call(xAxis);
+          .attr('transform', 'translate(0,' + height + ')')
+          .call(xAxis)
+        // Achsenbeschriftung hinzufügen
+        .append('text')
+          .attr('x', width)
+          .attr('y', -10)
+          .attr('fill', 'black')
+          .style('text-anchor', 'end')
+          .text('Einkommen');
 
+      // x-Achse an Gruppe anhängen
       group.append('g')
-        .call(yAxis);
+          .call(yAxis);
 
-      group.selectAll('.bar')
+      // Balken für jedes Daten-Objekt erstellen und an Gruppe anhängen
+      group.selectAll('rect')
           .data(data)
           .enter()
         .append('rect')
+          // Balken fängt links an der Achse an ...
           .attr('x', 1)
+          // auf der Höhe der jeweiligen Person
           .attr('y', function(d) { return yScale(d.name); })
+          // Länge des Balkens berechnet sich aus dem Einkommen, ...
           .attr('width', function(d) { return xScale(d.income); })
+          // ... die Höhe aus der Anzahl der Personen und des Zwischenabstands (padding)
           .attr('height', yScale.bandwidth())
           .attr('fill', 'dodgerblue');
     }
