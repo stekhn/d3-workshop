@@ -1,8 +1,6 @@
-# Übungsblätter
+# Lösung Übungsblatt D3
 
-*In den folgenden Beispielen sind Fehler versteckt. Kannst du sie finden?*
-
-Diese JSON-Datei hat fünf Fehler. Welche?
+1. Diese JSON-Datei hat fünf Fehler. Welche?
 
 ```javascript
 [
@@ -24,7 +22,7 @@ Diese JSON-Datei hat fünf Fehler. Welche?
 ]
 ```
 
-Wieso kann D3 dieses CSV nicht laden?
+2. Wieso kann D3 dieses CSV nicht laden?
 
 ```csv
 name;age;income
@@ -33,7 +31,7 @@ Sandra;23;32000
 Jakob;32;46000
 ```
 
-Was ist in diesem Beispiel falsch?
+3. Was ist in diesem Beispiel falsch?
 
 ```javascript
 d3.select('body')
@@ -45,11 +43,10 @@ d3.select('body')
     .text('Ein noch ein kurzer Text.');
 ```
 
-Wieso werden keine Werte im Paragraphen angezeigt?
+4. Wieso werden keine Werte im Paragraphen angezeigt?
 
 ```javascript
-var data = [{value: 5}, {value: 2}, {value: 10}, {value: 25}, {value: 40}]
-]
+var data = [{value: 5}, {value: 2}, {value: 10}, {value: 25}, {value: 40}];
 
 d3.select('body').selectAll('p')
     .data(data)
@@ -58,7 +55,7 @@ d3.select('body').selectAll('p')
     .text(d.value);
 ```
 
-Warum werden in diesem Beispiel keine Paragraphen ausgegeben?
+5. Warum werden in diesem Beispiel keine Paragraphen ausgegeben?
 
 ```javascript
 var data = {a: 5, b: 2, c: 10, d: 25, e: 40};
@@ -72,9 +69,9 @@ d3.select('body').selectAll('p')
     });
 ```
 
-Warum sieht mein Kreis so komisch aus?
+6. Warum sieht mein Kreis so komisch aus?
 
-```
+```javascript
 d3.select('body')
   .append('svg')
     .attr('width', 600)
@@ -86,7 +83,7 @@ d3.select('body')
     .attr('fill', 'lime');
 ```
 
-Wieso gibt `console.log(data)` keine Daten aus?
+7. Wieso gibt `console.log(data)` keine Daten aus?
 
 ```javascript
 var data;
@@ -98,7 +95,7 @@ d3.csv('data.csv', function (csv) {
 console.log(data);
 ```
 
-Warum passiert in diesem Beispiel gar nichts?
+8. Warum passiert in diesem Beispiel gar nichts?
 
 ```html
 <!DOCTYPE html>

@@ -1,6 +1,6 @@
-# Hausaufgaben
+# Hausaufgabe
 
-Hier ein paar kleine Hausaufgaben, um eure Programmierkenntnisse wieder wachzurufen und euch auf die wichtigsten Programmpunkte des kommenden Seminars vorzubereiten. Viel Spaß!
+Hier ein paar kleine Aufgaben, um eure Programmierkenntnisse wieder wachzurufen und euch auf die wichtigsten Programmpunkte des kommenden Seminars vorzubereiten. Viel Spaß!
 
 ## Javascript
 
