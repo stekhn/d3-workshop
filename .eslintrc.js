@@ -5,6 +5,7 @@ module.exports = {
   },
   "rules": {
     "no-console": [1],
+    "no-unused-vars": [1],
     "quotes": [2, "single"],
     "linebreak-style": [2, "unix"],
     "semi": [2, "always"],

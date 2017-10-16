@@ -1,30 +1,33 @@
 # D3-Workshop
 
+Einführung in die Visualisierungs-Bibliothek D3 mit praktischen Beispielen und Übungen.
+
 ## Was ist D3
 
-D3 = Data-Driven Documents
+**D3 steht für Data-Driven Documents.**
 
-D3 ist eine JavaScript-Bibliothek zur Visualisierung von Daten. D3 hilft dabei, Datensätze mit SVG, Canvas und HTML zum Leben zu erwecken. Im Gegensatz zu vielen anderen Bibliotheken ermöglicht D3 eine große Kontrolle über das endgültige visuelle Ergebnis.
+D3 ist eine JavaScript-Bibliothek zur Visualisierung von Daten. D3 hilft dabei Datensätze mit SVG, Canvas und HTML zum Leben zu erwecken. Im Gegensatz zu vielen anderen Bibliotheken, gibt es bei D3 keinerlei Einschränkungen was das visuelle Ergebnis anbelangt. Daher eignet sich D3 vor allem für maßgeschneiderte individuelle Lösungen.
 
-D3 wird auf Hunderten von Tausenden von Webseiten verwendet. Typische Anwendungsfälle sind das Erstellen von interaktiven Grafiken, Dashboards und Karten. Darüber hinaus ermöglicht das Grafikformat SVG die Weiterverwendung und Nachbearbeitung von Grafiken für den Druck.
+Typische Anwendungsfälle sind das Erstellen von interaktiven Grafiken, Dashboards und Karten. Darüber hinaus ermöglicht das Grafikformat SVG die Weiterverwendung und Nachbearbeitung von Grafiken für den Druck.
 
-D3 erfordert viel Erfahrung im Umgang mit modernen Webstandards und Funktionen der Bibliothek. Daher ist die Produktion von Grafiken teilweise recht aufwendig.
+D3 erfordert viel Erfahrung im Umgang mit modernen Webstandards und Funktionen der Bibliothek. Das macht die Produktion von Grafiken oftmals recht aufwendig.
 
-- Offizielle Webseite: https://d3js.org/
-- Dokumentation: https://github.com/d3/d3/blob/master/API.md
-- Beispiele: https://github.com/d3/d3/wiki/Gallery
-- Tutorials: https://github.com/d3/d3/wiki/Tutorials
+- **Offizielle Webseite**: https://d3js.org/
+- **Dokumentation**: https://github.com/d3/d3/blob/master/API.md
+- **Beispiele**: https://github.com/d3/d3/wiki/Gallery
+- **Tutorials**: https://github.com/d3/d3/wiki/Tutorials
 
-## Installation
+## Vorbereitung
 
-Um die Beispiele verwenden und verändern zu können, empfiehlt es sich [Node.js](https://nodejs.org/en/) zu installieren. Node.js ist eine JavaScript-Umgebung für die Kommandozeile und für alle Betriebssystem verfügbar. In diesem Workshop werden wir Node.js verwenden, um eine kleinen Webserver für Entwicklungszwecke aufzusetzen. 
+Um die Beispiele dieses Tutorials verwenden und verändern zu können, empfiehlt es sich [Node.js](https://nodejs.org/en/) zu installieren. Node.js ist eine JavaScript-Umgebung für die Kommandozeile und für alle Betriebssystem verfügbar. In diesem Workshop werden wir Node.js verwenden, um eine kleinen Webserver für Entwicklungszwecke aufzusetzen. 
 
 1. [Node.js](https://nodejs.org/en/) installieren. Wenn alles geklappt hat, sollte man in der Kommandozeile den Befehl `node --version` aufrufen können.
 2. Erforderliche Pakete mit dem Node.js-Paketmanager [NPM](https://www.npmjs.com/) installieren. Dazu in das Hauptverzeichnis dieses Projekts gehen und `npm install` ausführen. Welche Pakete Node.js installieren soll, ist in der Datei `package.json` festgelegt.
 3. Webserver starten mit `npm start`. Jetzt sollte ein Browserfenster unter der Addresse http://127.0.0.1:8080/ aufgehen. Die Beispiele zu diesem Workshop finden sich im Ordner `examples`.
 
 Optional:
-4. Einen sogenannten *Linter* installieren, der JavaScript-Fehler schon im Code-Editor anzeigt. Für diesen Workshop verwenden wir ESLint. Für Sublime Text muss man nur noch die Erweiterungen [SublimeLinter](https://packagecontrol.io/packages/SublimeLinter) und [SublimeLinter-contrib-eslint](https://packagecontrol.io/packages/SublimeLinter-contrib-eslint) installieren. Am einfachsten geht das mit dem Sublime-Paketmanager [Packagecontrol](https://packagecontrol.io/installation).
+
+4. *Linter* installieren, welcher JavaScript-Fehler schon im Code-Editor anzeigt. Für diesen Workshop verwenden wir ESLint, welches über NPM installiert werden kann: `npm install -g eslint`. Für Sublime Text müssen zudem die Erweiterungen [SublimeLinter](https://packagecontrol.io/packages/SublimeLinter) und [SublimeLinter-contrib-eslint](https://packagecontrol.io/packages/SublimeLinter-contrib-eslint) installiert werden. Linter und Plugins gibt es auch für HTML, CSS und andere Sprachen.
 
 ## D3 einbinden
 
@@ -50,12 +53,11 @@ Einbinden einer lokalen Version von D3:
 
 In diesem Fall wurde die D3 mithilfe des Paketmanagers NPM installiert `npm install d3`. Man könnte aber D3 auch einfach herunterladen.
 
-Üblicherweise bindet man Bibliotheken im `<head></head>` Bereich einer Website ein. So stellt man sicher, dass die durch die Bibliothek bereitgestellten Funktionen von Anfang verfügbar sind.
-
+Üblicherweise bindet man Bibliotheken im `<head>`-Bereich einer Website ein. So stellt man sicher, dass die Funktionen einer Bibliothek von Anfang an verfügbar sind.
 
 ## Selektoren
 
-D3 verfügt über zwei Methoden, wie man Elemente in einem Dokument auswählen kann. Wenn man ein Element ausgewählt hat, kann man dieses beispielsweise mit Inhalten befüllen, löschen oder ein Klickverhalten festlegen.
+D3 verfügt über zwei Methoden Elemente in einem Dokument auszuwählen. Sobald man ein Element ausgewählt hat, kann man dieses mit Inhalten befüllen, löschen oder ein Klickverhalten festlegen.
 
 Ein Element auswählen:
 
@@ -69,6 +71,8 @@ Mehrere Elemente auswählen:
 var charts = d3.selectAll('.chart')
 ```
 
+Vergleichbar sind diese Funktion mit den nativen Methoden `document.querySelector('#chart')` und `document.querySelectorAll('.chart')`, welche jeder moderne Browser unterstützt.
+
 Die wichtigsten Selektoren:
 
 - `body`: Element über Tag auswählen
@@ -78,10 +82,7 @@ Die wichtigsten Selektoren:
 - `#chart.bar`: Element/e über ID und Klasse auswählen
 - `#chart .bar`: Element/e über Parent-ID und Klasse auswählen
 
-
-Vergleichbar mit den nativen Methoden `document.querySelector('#chart')` und `document.querySelectorAll('.chart')`, die jeder moderne Browser unterstützt.
-
-Diese Selektoren würde man auch verwenden, um Elemente mit CSS zu stylen:
+Diese Selektoren würde man auch verwenden, um Elemente in CSS zu stylen:
 
 ```css
 .chart {
@@ -89,11 +90,11 @@ Diese Selektoren würde man auch verwenden, um Elemente mit CSS zu stylen:
 }
 ```
 
-## Attribute erstellen
+## Elemente und Attribute erstellen
 
-Um ein Element zu erstellen, verwendet man die Funktion `d3.append()`. Diese wird auf einen Selektion angewandt, der das neue Element hinzugefügt wird. Damit kann man alle Arten von DOM-Elementen erstellen.
+Um ein Element zu erstellen, verwendet man die Funktion `d3.append()`. Diese wird auf eine Selektion angewandt, welcher das neue Element hinzugefügt wird. So kann man alle Arten von HTML oder SVG-Elementen erstellen.
 
-Einfaches HTML-Beispiel.
+Einfaches HTML-Beispiel:
 
 ```javascript
 d3.select('body')
@@ -101,7 +102,7 @@ d3.select('body')
     .text('Überschrift');
 ```
 
-Das resultierende Markup sieht folgendermaßen aus:
+Daraus wird folgender HTML-Code erzeugt:
 
 ```html
 <body>
@@ -109,7 +110,7 @@ Das resultierende Markup sieht folgendermaßen aus:
 </body>
 ```
 
-Mit dem sogenannten *Method Chaining*, lassen sich mehrere Elemente hintereinander hinzufügen und Attribute setzen. In diesem SVG-Beispiel Wird erste der `<body></body>` eines HTML-Dokuments ausgewählt, dann eine SVG hinzugefügt. Diesem SVG wird wiederum ein rotes Dreieck hinzugefügt:  
+Mit dem sogenannten *Method Chaining*, lassen sich mehrere Elemente hintereinander hinzufügen und Attribute setzen. In diesem SVG-Beispiel wird erst der `<body>` eines HTML-Dokuments ausgewählt, dann ein SVG hinzugefügt. Diesem SVG wird wiederum ein rotes Rechteck hinzugefügt:  
 
 ```javascript
 d3.select('body')
@@ -124,7 +125,7 @@ d3.select('body')
     .attr('fill', 'red');
 ```
 
-Das resultierende Markup sieht folgendermaßen aus:
+Der resultierende SVG-Code sieht folgendermaßen aus:
 
 ```html
 <body>
@@ -136,7 +137,7 @@ Das resultierende Markup sieht folgendermaßen aus:
 
 ## SVG Elemente und Attribute
 
-Hier eine kleine Übersicht über die wichtigsten SVG-Elemente:
+SVG ist ein Vektorformat, welches sich vor allem für skalierbare Web-Grafiken eignet. Die Grafiken werden durch eine Auszeichnungssprache, vergleichbar mit HTML, definiert. Hier eine kleine Übersicht der wichtigsten SVG-Elemente:
 
 ```svg
 <rect x="0" y="0" width="100" height="100" />
@@ -148,26 +149,17 @@ Hier eine kleine Übersicht über die wichtigsten SVG-Elemente:
 <text x="100" y="100" text-anchor="start">Text</text>
 ```
 
-Die Attribute `x`, `y`, `cx`, `cy`, `r` und so weiter sind vor allem dazu da, die Position und Größe einen Elements festzulegen.
+Die Attribute `x`, `y`, `cx`, `cy`, `r` sind vor allem dazu da, die Position und Größe eines Elements festzulegen.
 
-Außerdem gibt es noch die Möglichkeit Elemente zu gruppieren. Das hilft dabei Ordnung zu schaffen, ein Style auf mehrere Elemente anzuwenden oder eine Gruppe von Elemente zu verschieben:
+Dieser Elemente können außerdem Attribute haben, welche das Aussehen definieren:
 
-```svg
-<g fill="red" style="transform: translate(10,10);">
-  <circle cx="10" cy="10" r="10" />
-  <circle cx="30" cy="10" r="10" />
-  <circle cx="50" cy="10" r="10" />
-</g>
-```
-
-Die meisten dieser Elemente können außerdem Attribute haben, die das Design festlegen:
 - `fill`: Füllfarbe, zum Beispiel `red`
 - `fill-opacity`: Deckkraft zwischen `1` und `0`
 - `stroke`: Konturfarbe, zum Beispiel `green`
 - `stroke-width`: Dicke der Kontur, zum Beispiel `2` 
 - `stroke-opacity`: Deckkraft der Kontur zwischen `1` und `0`
 
-Außerdem können SVG-Elemente, wie HTML auch, mit CSS gestylt werden:
+SVG-Elemente können, wie HTML auch, mit CSS gestylt werden:
 
 ```css
 .axis line {
@@ -175,6 +167,16 @@ Außerdem können SVG-Elemente, wie HTML auch, mit CSS gestylt werden:
   stroke: #6c3;
   stroke-width: 2;
 }
+
+```
+Außerdem gibt es die Möglichkeit Elemente zu gruppieren. Dies hilft dabei, Ordnung zu schaffen, ein Style auf mehrere Elemente anzuwenden oder eine Gruppe von Elementen zu verschieben:
+
+```svg
+<g fill="red" style="transform: translate(10,10);">
+  <circle cx="10" cy="10" r="10">
+  <circle cx="30" cy="10" r="10">
+  <circle cx="50" cy="10" r="10">
+</g>
 ```
 
 Ein praktisches SVG-Cheat-Sheet gibt es [hier](https://learn-the-web.algonquindesign.ca/topics/svg-cheat-sheet/).
@@ -187,18 +189,18 @@ In diesem Beispiel wird eine neuer Paragraph erzeugt, dessen Inhalt eine zufäll
 
 ```javascript
 d3.select('body')
+
   .append('p')
     .text(function () {
       return 'Zufällige Zahl: ' + Math.round((Math.random() * 10) + 1);
     });
 ```
 
-Diese Eigenschaft ist sehr praktisch, wenn man programmatisch Elemente hinzufügt, deren Eigenschaften sich entsprechend der zugrundeliegenden Daten verändern sollen.
+Diese Eigenschaft ist sehr praktisch, wenn man programmatisch Elemente hinzufügt deren Eigenschaften sich entsprechend der zugrundeliegenden Daten verändern sollen.
 
 ## Daten verwenden
 
 Die Fähigkeit Daten in Elemente zu verwandeln ist die große Stärke von D3. Das grundlegende Muster dafür ist immer das gleiche.
-
 
 Alles beginnt mit einem Array, einer sortierten Liste, welches die Daten enthält:
 
@@ -220,7 +222,7 @@ d3.select('body').selectAll('p')
     });
 ```
 
-**Hinweis**: Das `.selectAll('p')` am Anfang wird benötigt, obwohl es noch gar keine Paragraphen gibt.
+**Hinweis**: `.selectAll('p')` am Anfang wird benötigt, obwohl es noch gar keine Paragraphen gibt.
 
 Wir können die Werte aus dem Array `data` auch verwenden, um ein einfaches Diagramm zu zeichnen:
 
@@ -239,12 +241,13 @@ d3.select('body')
     .attr('r', 10); 
 ```
 
-Die verwendete Funktion ist ein sogenannte *Accessor*. Wenn ein oder mehrere Elemente mit einem Datensatz verbunden sind, liefert uns der Accessor immer den jeweiligen Datensatz und Index des zu erzeugenden Elements:
+Die verwendete Funktion ist ein sogenannter *Accessor*. Wenn ein oder mehrere Elemente mit einem Datensatz verbunden sind, bekommt der Accessor immer den jeweiligen Datensatz, Index und Elternelement des zu erzeugenden Elements:
 
 ```javascript
-function (d, i) {
+function (d, i, p) {
   console.log('Werte:', d)
   console.log('Index:', i)
+  console.log('Elternelement:', p)
 
   return d;
 } 
@@ -253,7 +256,8 @@ function (d, i) {
 Die Funktion `console.log()` kann praktisch sein, um Fehler im Programmcode zu finden (*debuggen*). Werden überhaupt Werte ausgegeben und wenn ja, sind es die richtigen?
 
 ## Daten aus externen Quellen laden
-Mithilfe von D3 kann man auch Daten aus CSV- oder JSON-Dateien laden. Wichtig dabei ist, dass diese Dateien korrekt formatiert sind.
+
+Mithilfe von D3 kann man auch Daten aus CSV- oder JSON-Dateien laden. Wichtig dabei ist, dass die Datei korrekt formatiert ist.
 
 CSV-Datei laden:
 
@@ -263,16 +267,16 @@ d3.csv('data.csv', function (data) {
 });
 ```
 
-Da das CSV-Format keine Informationen beinhaltet, ob einen Spalte Zahlen (*Integers*, *Floats*) oder Zeichenfolgen (*String*) enthält muss man diese zuerst in richtige Format konvertieren:
+Das CSV-Format beinhaltet keine Informationen darüber, ob eine Spalte Zahlen (*Integers*, *Floats*) oder Zeichenfolgen (*String*) enthält. Daher muss man die Werte zuerst ins richtige Datenformat konvertieren:
 
 ```javascript
 d3.csv('data.csv', function (data) {
-  data = data.map(function (d) {
-    return {
-      name: d.name,
-      age: parseInt(d.age) 
-    };
+  data.forEach(function (d) {
+    d.age = parseInt(d.age);
+    d.income = parseFloat(d.income);
   });
+
+  console.log(data);
 });
 ```
 
@@ -284,7 +288,7 @@ d3.json('data.json', function (data) {
 });
 ```
 
-Das Laden der Daten passiert asynchron. Deshalb kann man nur innerhalb des *Callbacks* (`function (data) {}`) mit den Daten arbeiten. Diese Callback-Funktion kann man auch getrennt definieren:
+Das Laden der Daten passiert asynchron. Deshalb kann man nur innerhalb des *Callbacks* (`function (data) {}`) auf die Daten zugreifen. Die Callback-Funktion kann man auch getrennt definieren:
 
 ```javascript
 d3.json('data.json', drawCircles);
@@ -344,7 +348,7 @@ var data = [
 d3.extent(data, function (d) { return d.age; } ); // => [24, 39]
 ```
 
-Diese statistischen Funktion sind sehr nützlich, um damit die Skalen für ein Diagramm zu berechnen:
+Diese statistischen Funktion sind sehr nützlich, um die Skalen für ein Diagramm zu berechnen:
 
 ## Skalen
 
@@ -378,21 +382,20 @@ var xScale = d3.scaleLinear()
 
 Hier ein Überblick über die wichtigsten Skalen:
 
-- `d3.scaleLinear()`: Lineare Skala, transformiert einen Wert im Domänenintervall in einen Wert im Bereichsintervall
+- `d3.scaleLinear()`: lineare Skala, transformiert einen Wert im Domänenintervall in einen Wert im Bereichsintervall
 - `d3.scalePow()`, `d3.scaleLog()`: Exponential- und logarithmische Skalen werden für exponentiell oder logarithmisch steigende Werte (Wachstum) verwendet
 - `d3.scaleTime()`: Zeit,
 - `d3.scaleQuantize()`: Quantisierung, eine lineare Skala mit diskreten Werten für den Ausgabebereich, um Daten zu klassifizieren.
-- `d3.scaleQuantile()`: Quantile, eine lineare Skala mit diskreten Werten für den Eingabedomäne, wenn Daten bereits klassifiziert sind
+- `d3.scaleQuantile()`: Quantile, eine lineare Skala mit diskreten Werten für die Eingabedomäne, wenn die Daten bereits klassifiziert sind
 - `d3.scaleOrdinal`: Ordinalskala, für nicht quantitative Daten wie Namen oder Kategorien
 
 Alle Skalen und ihre Funktion werden in der [D3-Dokumentation](https://github.com/d3/d3-scale) erklärt.
 
 ## Achsen
 
-Achsen sind ein wichtiges visuelles Werkzeug, um dem Betrachter das Verstehen und Einordnen eines Diagramms zu erleichtern. Achsel helfen dabei einzelne Datenpunkte bestimmten Werten zuzuordnen und die zugrundeliegende Skala zu verstehen.
+Achsen sind ein wichtiges visuelles Werkzeug, um dem Betrachter das Erfassen und Einordnen eines Diagramms zu erleichtern. Achsen helfen dabei einzelne Datenpunkte bestimmten Werten zuzuordnen und die zugrundeliegende Skala zu verstehen.
 
 Um eine Achse in D3 zu konstruieren braucht es immer eine Skala. Optional können verschiedene Eigenschaft, wie die Markerlänge oder das Zahlenformat, definiert werden:
-
 
 ```javascript
 var xAxis= d3.axisBottom(xScale)
@@ -405,8 +408,7 @@ var xAxis= d3.axisBottom(xScale)
 
 Alle Funktionen des Achsenkonstruktors werden in der [D3-Dokumentation](https://github.com/d3/d3-axis/blob/master/README.md) erklärt.
 
-Ein Problem bei der Verwendung der Achsen ist ihrer Positionierung. Die linke Achse `d3.axisLeft()` wird standardmäßig entlang des linken Bildschirms gezeichnet. Um die Achsen-Labels zu sehen, muss man die Achse nach rechts verschieben. Das gleiche gilt für die untere Achse `d3.axisBottom()`, welche erst nach unten verschoben werden muss. Dabei hilft die das SVG-Attribut [transform](https://developer.mozilla.org/en-US/docs/Web/CSS/transform) und vordefinierte Seitenabstände:
-
+Ein Problem bei der Verwendung der Achsen ist ihrer Positionierung. Die linke Achse `d3.axisLeft()` wird standardmäßig entlang des linken Bildschirms gezeichnet. Um die Achsen-Labels zu sehen, muss man die Achse nach rechts verschieben. Das gleiche gilt für die untere Achse `d3.axisBottom()`, welche erst nach unten verschoben werden muss. Dabei helfen SVG-Gruppen `<g>` und das Attribut [transform](https://developer.mozilla.org/en-US/docs/Web/CSS/transform). Außerdem ist es sinnvoll die Seitenabstände vorzudefinieren:
 
 ```javascript
 var data = [
@@ -475,12 +477,12 @@ var chart = d3.select('body')
     });
 ```
 
-Event Listener in Verbindung mit einem `console.log()` können sehr praktisch beim *Debuggen* einer Anwendung sein. Wir das richtige Element ausgewählt? Passiert überhaupt etwas?
+Event Listener in Verbindung mit einem `console.log()` können hilfreich beim *Debuggen* einer Anwendung sein. Wir das richtige Element ausgewählt? Passiert überhaupt etwas?
 
 Mehr Infos zu *Event Listener* sich in der [D3-Dokumentation](https://github.com/d3/d3-selection/blob/master/README.md#handling-events).
 
 ## Responsivität
-D3 hat von sich aus keine Funktionen eingebaut, die es ermöglichen Grafiken *responsive* zu erstellen. Die Grafiken passen sich daher nicht automatisch an die Breite des Benutzergeräts (oder iFrames) an. 
+D3 hat von sich aus keine Funktionen eingebaut, die es ermöglichen Grafiken *responsive* zu erstellen. Die Grafiken passen sich daher nicht automatisch an die Breite des Browsers, beziehungsweise des HTML-Containers oder iFrames, an. 
 
 Um zumindest beim ersten Aufruf die Grafik in der passenden Größe zu erstellen, kann man dafür die Höhe und Breite des Elterncontainers `#chart` verwenden: 
 
@@ -496,7 +498,7 @@ var svg = chart
     .attr('height', height);
 ```
 
-Wenn den Benutzer jedoch die Breite des Browserfensters verändert, zum Beispiel durch Maximieren oder Drehen des mobilen Endgeräts, passt sich die Grafik nicht an. Um auf diese Veränderungen zu reagieren, kann man einen *Event Listener* registrieren, der bei Bedarf den Chart neuzeichnet:
+Wenn der Benutzer jedoch die Breite des Browserfensters verändert, zum Beispiel durch Maximieren oder Drehen des mobilen Endgeräts, passt sich die Grafik nicht an. Um auf diese Veränderungen zu reagieren, kann man einen *Event Listener* registrieren, der bei Bedarf den Chart neuzeichnet:
 
 ```javascript
 var timeout;
@@ -513,7 +515,7 @@ d3.select(window).on('resize', function () {
 
 Die Timeout-Funktion in diesem Beispiel verhindert, dass die Grafik zu oft neu gezeichnet wird oder zumindest erst dann, wenn die Größenänderung des Containers abgeschlossen ist.
 
-Eine weitere Möglichkeit Grafiken *responsive* zu gestalten, ist das proportionale Skalieren der Grafik in alle Richtungen. Diese Methode wird [hier](https://brendansudol.com/writing/responsive-d3) beschrieben, funktioniert aber nur bei Grafiken, die sich sinnvoll in alle Richtungen skalieren lassen. Oft führt das zum Überlaufen einer Grafiken in den Text hinein.
+Eine weitere Möglichkeit Grafiken *responsive* zu gestalten, ist das proportionale Skalieren der Grafik in alle Richtungen. Diese Methode wird [hier](https://brendansudol.com/writing/responsive-d3) beschrieben, funktioniert aber nur bei Grafiken, die sich sinnvoll in alle Richtungen skalieren lassen.
 
 ## Animationen
 
